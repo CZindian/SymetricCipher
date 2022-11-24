@@ -12,19 +12,42 @@ import java.util.Base64;
 
 public class AES {
 
+    //region Attributes
     private static final String AES_CIPHER = "AES";
     private static final String AES_CBC_PKCS5_PADDING = "AES/CBC/PKCS5Padding";
+    private static final String AES_CFB_NO_PADDING = "AES/CFB/NoPadding";
+    //endregion
 
 
     //region CBC
     public static String encryptTextCBC(Metadata metadata) {
+        return getEncryptedString(metadata, AES_CBC_PKCS5_PADDING);
+    }
+
+    public static String decryptTextCBC(Metadata metadata) {
+        return getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
+    }
+    //endregion
+
+    //region CFB
+    public static String encryptTextCFB(Metadata metadata) {
+        return getEncryptedString(metadata, AES_CFB_NO_PADDING);
+    }
+
+    public static String decryptTextCFB(Metadata metadata) {
+        return getDecryptedString(metadata, AES_CFB_NO_PADDING);
+    }
+    //endregion
+
+
+    private static String getEncryptedString(Metadata metadata, String algorithm) {
 
         try {
             IvParameterSpec iv = generateIv();
             Key key = getPasswordBasedKey(metadata);
             metadata.setIvForDecryption(iv.getIV());
 
-            return encrypt(AES_CBC_PKCS5_PADDING, metadata.getMessage(), key, iv);
+            return encrypt(algorithm, metadata.getMessage(), key, iv);
 
         } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
                  NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException e) {
@@ -35,12 +58,13 @@ public class AES {
 
     }
 
-    public static String decryptTextCBC(Metadata metadata) {
+
+    private static String getDecryptedString(Metadata metadata, String algorithm) {
 
         try {
             IvParameterSpec iv = getIvFor(metadata.getIvForDecryption());
             Key key = getPasswordBasedKey(metadata);
-            return decrypt(AES_CBC_PKCS5_PADDING, metadata.getMessage(), key, iv);
+            return decrypt(algorithm, metadata.getMessage(), key, iv);
 
         } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
                  NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException |
@@ -52,16 +76,6 @@ public class AES {
         return null;
 
     }
-    //endregion
-
-    public static String encryptTextXTS(Metadata metadata) {
-        throw new UnsupportedOperationException();
-    }
-
-    public static String decryptTextXTS(Metadata metadata) {
-        throw new UnsupportedOperationException();
-    }
-
 
 
     private static Key getPasswordBasedKey(Metadata metadata) throws NoSuchAlgorithmException, InvalidKeySpecException {
