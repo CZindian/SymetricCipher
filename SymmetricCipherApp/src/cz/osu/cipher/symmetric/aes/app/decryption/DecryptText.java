@@ -1,22 +1,12 @@
 package cz.osu.cipher.symmetric.aes.app.decryption;
 
-import cz.osu.cipher.symmetric.aes.app.aes.AES128;
-import cz.osu.cipher.symmetric.aes.app.aes.AES192;
-import cz.osu.cipher.symmetric.aes.app.aes.AES256;
+import cz.osu.cipher.symmetric.aes.app.aes.AES;
 import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedCipherModeException;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 import cz.osu.cipher.symmetric.aes.app.utils.Utils;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.CIPHER_KEY_LENGTH_COMMAND;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.MODE_INTRO_COMMAND;
@@ -52,33 +42,11 @@ public class DecryptText {
     private static void decrypt() {
 
         switch (metadata.getMode().name()) {
-            case CBC -> decryptByCBC();
-            case XTS -> decryptByXTS();
+            case CBC -> decryptedMessage = AES.decryptTextCBC(metadata);
+            case XTS -> decryptedMessage = AES.decryptTextXTS(metadata);
             default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
         }
 
-    }
-
-    private static void decryptByCBC() {
-
-        switch (metadata.getCipherKeyLength()) {
-            case 128 -> {
-                decryptedMessage = AES128.decryptCBC(metadata);
-            }
-            case 192 -> {
-                decryptedMessage = AES192.decryptCBC(metadata);
-            }
-            case 256 -> {
-                decryptedMessage = AES256.decryptCBC(metadata);
-            }
-            default -> throw new UnsuportedBlockSizeException(metadata.getCipherKeyLength());
-        }
-
-    }
-
-    //TODO
-    private static void decryptByXTS() {
-        throw new UnsupportedOperationException("encryptByXTS() is not implemented");
     }
 
 
