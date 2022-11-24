@@ -42,6 +42,7 @@ public class EncryptText {
         );*/
         encrypt();
         System.out.println("Encrypted message: " + encryptedMessage);
+        System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
     }
 

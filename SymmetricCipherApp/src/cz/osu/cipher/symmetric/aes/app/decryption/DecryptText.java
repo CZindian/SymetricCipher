@@ -33,6 +33,7 @@ public class DecryptText {
         runIntroCipherKeyLength();
         runIntroMessage();
         runIntroPassword();
+        runIntroIvForDecryption();
 
         decrypt();
         System.out.println("Decrypted message: " + decryptedMessage);
@@ -101,6 +102,13 @@ public class DecryptText {
         listenConsoleInputPassword();
 
     }
+
+    private static void runIntroIvForDecryption() {
+
+        System.out.println("Insert initialization that you have got on encryption:");
+        listenConsoleInputIvForDecryption();
+
+    }
     //endregion
 
 
@@ -165,6 +173,21 @@ public class DecryptText {
         } catch (EmptyMessageException e) {
             System.out.println(e.getMessage());
             runIntroPassword();
+
+        }
+
+    }
+
+    private static void listenConsoleInputIvForDecryption() {
+
+        try {
+            consoleInput = Utils.getConsoleInput();
+            Utils.checkConsoleInputValidity(consoleInput);
+            metadata.setIvForDecryption(consoleInput);
+
+        } catch (EmptyMessageException e) {
+            System.out.println(e.getMessage());
+            runIntroIvForDecryption();
 
         }
 

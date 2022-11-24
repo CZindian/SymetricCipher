@@ -2,6 +2,8 @@ package cz.osu.cipher.symmetric.aes.app.model;
 
 import cz.osu.cipher.symmetric.aes.app.utils.Utils;
 
+import java.util.Base64;
+
 public class Metadata {
 
     //region Attributes
@@ -9,6 +11,7 @@ public class Metadata {
     private String password;
     private String message;
     private Mode mode;
+    private String ivForDecryption;
     //endregion
 
     //region Getters
@@ -38,6 +41,11 @@ public class Metadata {
         return mode;
     }
 
+    public String getIvForDecryption() {
+        Utils.checkValidity(ivForDecryption);
+        return ivForDecryption;
+    }
+
     //endregion
 
     //region Setters
@@ -55,6 +63,15 @@ public class Metadata {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+    }
+
+    public void setIvForDecryption(String ivForDecryption) {
+        this.ivForDecryption = ivForDecryption;
+    }
+
+    public void setIvForDecryption(byte[] ivForDecryption) {
+        String ivString = Base64.getEncoder().encodeToString(ivForDecryption);
+        this.ivForDecryption = ivString;
     }
 
     //endregion
