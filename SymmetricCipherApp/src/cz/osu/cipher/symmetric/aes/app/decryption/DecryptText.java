@@ -10,8 +10,7 @@ import cz.osu.cipher.symmetric.aes.app.utils.Utils;
 
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.CIPHER_KEY_LENGTH_COMMAND;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.MODE_INTRO_COMMAND;
-import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CBC;
-import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.XTS;
+import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.*;
 
 public class DecryptText {
 
@@ -25,7 +24,7 @@ public class DecryptText {
 
         metadata = new Metadata();
 
-        System.out.println("Choose " + Mode.CBC.name() + " or " + Mode.XTS.name());
+        System.out.println("Choose " + Mode.CBC.name() + " or " + Mode.CFB.name());
 
         runIntroMode();
         runIntroCipherKeyLength();
@@ -38,12 +37,11 @@ public class DecryptText {
 
     }
 
-
     private static void decrypt() {
 
         switch (metadata.getMode().name()) {
             case CBC -> decryptedMessage = AES.decryptTextCBC(metadata);
-            case XTS -> decryptedMessage = AES.decryptTextXTS(metadata);
+            case CFB -> decryptedMessage = AES.decryptTextCFB(metadata);
             default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
         }
 
@@ -96,7 +94,7 @@ public class DecryptText {
 
             switch (consoleInput) {
                 case CBC -> metadata.setMode(Mode.CBC);
-                case XTS -> metadata.setMode(Mode.XTS);
+                case CFB -> metadata.setMode(Mode.CFB);
                 default -> throw new UnsuportedCipherModeException(consoleInput);
             }
 
