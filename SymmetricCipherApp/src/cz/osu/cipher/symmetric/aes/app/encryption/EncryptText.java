@@ -1,8 +1,6 @@
 package cz.osu.cipher.symmetric.aes.app.encryption;
 
-import cz.osu.cipher.symmetric.aes.app.aes.AES128;
-import cz.osu.cipher.symmetric.aes.app.aes.AES192;
-import cz.osu.cipher.symmetric.aes.app.aes.AES256;
+import cz.osu.cipher.symmetric.aes.app.aes.AES;
 import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedCipherModeException;
@@ -34,12 +32,6 @@ public class EncryptText {
         runIntroMessage();
         runIntroPassword();
 
-/*        System.out.println(
-                metadata.getMode().name() + "\n" +
-                        metadata.getCipherKeyLength() + "\n" +
-                        metadata.getMessage() + "\n" +
-                        metadata.getPassword()
-        );*/
         encrypt();
         System.out.println("Encrypted message: " + encryptedMessage);
         System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
@@ -50,33 +42,11 @@ public class EncryptText {
     private static void encrypt() {
 
         switch (metadata.getMode().name()) {
-            case CBC -> encryptByCBC();
-            case XTS -> encryptByXTS();
+            case CBC -> encryptedMessage = AES.encryptTextCBC(metadata);
+            case XTS -> encryptedMessage = AES.encryptTextXTS(metadata);
             default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
         }
 
-    }
-
-    private static void encryptByCBC() {
-
-        switch (metadata.getCipherKeyLength()) {
-            case 128 -> {
-                encryptedMessage = AES128.encryptCBC(metadata);
-            }
-            case 192 -> {
-                encryptedMessage = AES192.encryptCBC(metadata);
-            }
-            case 256 -> {
-                encryptedMessage = AES256.encryptCBC(metadata);
-            }
-            default -> throw new UnsuportedBlockSizeException(metadata.getCipherKeyLength());
-        }
-
-    }
-
-    //TODO
-    private static void encryptByXTS() {
-        throw new UnsupportedOperationException("encryptByXTS() is not implemented");
     }
 
 
