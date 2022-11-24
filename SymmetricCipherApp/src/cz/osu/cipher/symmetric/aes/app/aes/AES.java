@@ -31,8 +31,7 @@ public class AES {
 
     public static IvParameterSpec getIvFor(String ivString) {
 
-        byte[] iv = new byte[16];
-        iv = Base64.getDecoder().decode(ivString);
+        byte[] iv = Base64.getDecoder().decode(ivString);
         return new IvParameterSpec(iv);
 
     }

@@ -10,6 +10,14 @@ import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 import cz.osu.cipher.symmetric.aes.app.utils.Utils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.CIPHER_KEY_LENGTH_COMMAND;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.MODE_INTRO_COMMAND;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CBC;
@@ -91,7 +99,7 @@ public class DecryptText {
 
     private static void runIntroMessage() {
 
-        System.out.println("Type your message:");
+        System.out.println("Type your encrypted message:");
         listenConsoleInputMessage();
 
     }
