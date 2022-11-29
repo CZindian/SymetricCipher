@@ -8,5 +8,10 @@ public class Phrases {
     public static final String SPECIES_INTRO_COMMAND = "Choose 'f' for a file or 't' for text:'";
     public static final String MODE_INTRO_COMMAND = "Type '" + Mode.CBC.name() + "' or '" + Mode.CFB.name() + "' upper or lower case:";
     public static final String CIPHER_KEY_LENGTH_COMMAND = "Choose length of cipher key (128, 192, 256):";
+    public static final String COMPLETE_FILE_PATH_COMMAND = "Type complete path to your file:";
+    public static final String COMPLETE_ENCRYPTED_FILE_PATH_COMMAND = "Type complete path, where you want to store encrypted file:";
+    public static final String EXAMPLE_FILE_PATH_COMMAND = "\t-example: C:\\user\\data\\file.txt";
+    public static final String EXAMPLE_DIRECTORY_PATH_COMMAND = "\t-example: C:\\user\\data\\";
+
 
 }
