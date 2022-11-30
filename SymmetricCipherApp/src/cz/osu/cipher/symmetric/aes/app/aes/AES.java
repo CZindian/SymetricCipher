@@ -1,6 +1,7 @@
 package cz.osu.cipher.symmetric.aes.app.aes;
 
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
+import cz.osu.cipher.symmetric.aes.app.utils.Storage;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -49,6 +50,24 @@ public class AES {
     public static String decryptTextCBC(Metadata metadata) {
         return getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
     }
+
+    //TODO IO EXCEPTION!!!
+    public static void decryptFileCBC(Metadata metadata) {
+
+        try {
+            IvParameterSpec iv = generateIv();
+            Key key = getPasswordBasedKey(metadata);
+            metadata.setIvForDecryption(iv.getIV());
+            decryptFile(AES_CBC_PKCS5_PADDING, metadata, key, iv);
+
+        } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
+                 NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException |
+                 IOException e) {
+            System.out.println("\t-" + e.getMessage());
+            throw new RuntimeException(e);
+
+        }
+    }
     //endregion
 
     //region CFB
@@ -62,6 +81,10 @@ public class AES {
 
     public static String decryptTextCFB(Metadata metadata) {
         return getDecryptedString(metadata, AES_CFB_NO_PADDING);
+    }
+
+    public static void decryptFileCFB(Metadata metadata){
+        throw new UnsupportedOperationException();
     }
     //endregion
 
@@ -152,6 +175,9 @@ public class AES {
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 
+        File inputFile = Storage.load(metadata.getInputPath());
+        File outputFile = Storage.load(metadata.getInputPath());
+
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
         rewrite(inputFile, outputFile, cipher);
@@ -170,10 +196,12 @@ public class AES {
         return new String(plainText);
     }
 
-    public static void decryptFile(String algorithm, SecretKey key, IvParameterSpec iv,
-                                   File inputFile, File outputFile)
+    public static void decryptFile(String algorithm, Metadata metadata, Key key, IvParameterSpec iv)
             throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+
+        File inputFile = Storage.load(metadata.getInputPath());
+        File outputFile = Storage.load(metadata.getInputPath());
 
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.DECRYPT_MODE, key, iv);
@@ -183,6 +211,7 @@ public class AES {
 
     private static void rewrite(File inputFile, File outputFile, Cipher cipher)
             throws IOException, IllegalBlockSizeException, BadPaddingException {
+
         FileInputStream inputStream = new FileInputStream(inputFile);
         FileOutputStream outputStream = new FileOutputStream(outputFile);
 
