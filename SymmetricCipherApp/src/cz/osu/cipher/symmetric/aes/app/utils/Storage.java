@@ -5,7 +5,8 @@ import java.nio.file.Paths;
 
 public class Storage {
 
-    public static File load(String path){
+    //TODO check validity of path
+    public static File load(String path) {
 
         File ret = Paths.get(path).toFile();
         return ret;

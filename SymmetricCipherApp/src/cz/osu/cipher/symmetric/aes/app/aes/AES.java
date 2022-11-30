@@ -57,7 +57,6 @@ public class AES {
         try {
             IvParameterSpec iv = generateIv();
             Key key = getPasswordBasedKey(metadata);
-            metadata.setIvForDecryption(iv.getIV());
             decryptFile(AES_CBC_PKCS5_PADDING, metadata, key, iv);
 
         } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
@@ -83,7 +82,7 @@ public class AES {
         return getDecryptedString(metadata, AES_CFB_NO_PADDING);
     }
 
-    public static void decryptFileCFB(Metadata metadata){
+    public static void decryptFileCFB(Metadata metadata) {
         throw new UnsupportedOperationException();
     }
     //endregion
