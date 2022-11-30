@@ -13,7 +13,6 @@ public class Metadata {
     private Mode mode;
     private String ivForDecryption;
     private String inputPath;
-    private String outputPath;
     //endregion
 
     //region Getters
@@ -53,11 +52,6 @@ public class Metadata {
         return inputPath;
     }
 
-    public String getOutputPath() {
-        Utils.checkValidity(outputPath);
-        return outputPath;
-    }
-
     //endregion
 
     //region Setters
@@ -89,11 +83,6 @@ public class Metadata {
     public void setInputPath(String inputPath) {
         this.inputPath = inputPath;
     }
-
-    public void setOutputPath(String outputPath) {
-        this.outputPath = outputPath;
-    }
-
     //endregion
 
 }

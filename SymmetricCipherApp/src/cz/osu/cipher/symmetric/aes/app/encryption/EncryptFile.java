@@ -14,9 +14,10 @@ import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CFB;
 
 public class EncryptFile {
 
+    //region Attributes
     private static Metadata metadata;
     private static String consoleInput;
-    private static String  encryptedFilePath;
+    //endregion
 
     public static void run() {
 
@@ -27,11 +28,10 @@ public class EncryptFile {
         runIntroMode();
         runIntroCipherKeyLength();
         runIntroInputPath();
-        runIntroOutputPath();
         runIntroPassword();
 
         encrypt();
-        System.out.println("Encrypted file is stored in: " + encryptedFilePath);
+        System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
         System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
     }
@@ -43,8 +43,6 @@ public class EncryptFile {
             case CFB -> AES.encryptFileCFB(metadata);
             default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
         }
-
-        encryptedFilePath = metadata.getOutputPath();
 
     }
 
@@ -64,23 +62,13 @@ public class EncryptFile {
 
     }
 
-    public static void runIntroInputPath(){
+    public static void runIntroInputPath() {
 
         System.out.println(COMPLETE_FILE_PATH_COMMAND);
         System.out.println(EXAMPLE_FILE_PATH_COMMAND);
         listenConsoleInputPath();
 
     }
-
-
-    public static void runIntroOutputPath(){
-
-        System.out.println(COMPLETE_ENCRYPTED_FILE_PATH_COMMAND);
-        System.out.println(EXAMPLE_DIRECTORY_PATH_COMMAND);
-        listenConsoleInputOutputPath();
-
-    }
-
 
     private static void runIntroPassword() {
 
@@ -137,21 +125,6 @@ public class EncryptFile {
         } catch (EmptyMessageException e) {
             System.out.println(e.getMessage());
             runIntroInputPath();
-
-        }
-
-    }
-
-    private static void listenConsoleInputOutputPath() {
-
-        try {
-            consoleInput = Utils.getConsoleInput();
-            Utils.checkConsoleInputValidity(consoleInput);
-            metadata.setOutputPath(consoleInput);
-
-        } catch (EmptyMessageException e) {
-            System.out.println(e.getMessage());
-            runIntroOutputPath();
 
         }
 
