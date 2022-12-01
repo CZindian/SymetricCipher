@@ -32,6 +32,12 @@ public class EncryptFile {
 
         encrypt();
 
+        if (metadata.getOutputPath() != null) {
+            System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
+            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
+            System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
+        }
+
     }
 
     private static void encrypt() {
@@ -42,12 +48,9 @@ public class EncryptFile {
                 case CFB -> AES.encryptFileCFB(metadata);
                 default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
             }
-            System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
-            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
-            System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
         } catch (IOException | FileOrDirectoryDoesNotExistException |
-                 DirectoryDoesNotExistException | FileDoesNotExistException e) {
+                DirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
         }
 
@@ -131,7 +134,7 @@ public class EncryptFile {
             metadata.setInputPath(consoleInput);
 
         } catch (EmptyMessageException | DirectoryDoesNotExistException |
-                 FileOrDirectoryDoesNotExistException | FileDoesNotExistException e) {
+                FileOrDirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
             runIntroInputPath();
 

@@ -43,7 +43,9 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getEncryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+        if ((encryptedData != null)){
+            Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+        }
 
     }
 
@@ -59,7 +61,9 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
+        if ((encryptedData != null)){
+            Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
+        }
 
     }
     //endregion
@@ -77,7 +81,9 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getEncryptedString(metadata, AES_CFB_NO_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+        if ((encryptedData != null)){
+            Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+        }
 
     }
 
@@ -93,7 +99,9 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getDecryptedString(metadata, AES_CFB_NO_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+        if ((encryptedData != null)){
+            Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
+        }
 
     }
     //endregion

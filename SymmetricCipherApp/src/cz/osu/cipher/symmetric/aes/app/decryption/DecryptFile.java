@@ -33,6 +33,11 @@ public class DecryptFile {
 
         decrypt();
 
+        if (metadata.getOutputPath() != null) {
+            System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
+            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
+        }
+
     }
 
     private static void decrypt() {
@@ -43,11 +48,9 @@ public class DecryptFile {
                 case CFB -> AES.decryptFileCFB(metadata);
                 default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
             }
-            System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
-            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
 
         } catch (IOException | FileOrDirectoryDoesNotExistException |
-                 DirectoryDoesNotExistException | FileDoesNotExistException e) {
+                DirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
         }
 
@@ -139,7 +142,7 @@ public class DecryptFile {
             metadata.setInputPath(consoleInput);
 
         } catch (EmptyMessageException | FileDoesNotExistException | FileOrDirectoryDoesNotExistException |
-                 DirectoryDoesNotExistException e) {
+                DirectoryDoesNotExistException e) {
             System.out.println(e.getMessage());
             runIntroInputPath();
 

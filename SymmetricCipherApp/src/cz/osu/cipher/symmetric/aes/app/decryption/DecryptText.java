@@ -33,7 +33,11 @@ public class DecryptText {
         runIntroIvForDecryption();
 
         decrypt();
-        System.out.println("Decrypted message: " + decryptedMessage);
+
+        if (decryptedMessage != null) {
+            System.out.println("Decrypted message: " + decryptedMessage);
+        }
+
 
     }
 

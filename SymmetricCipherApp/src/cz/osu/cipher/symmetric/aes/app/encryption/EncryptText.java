@@ -32,8 +32,10 @@ public class EncryptText {
         runIntroPassword();
 
         encrypt();
-        System.out.println("Encrypted message: " + encryptedMessage);
-        System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
+        if (encryptedMessage != null && metadata.getIvForDecryption() != null) {
+            System.out.println("Encrypted message: " + encryptedMessage);
+            System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
+        }
 
     }
 
