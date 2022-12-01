@@ -4,6 +4,11 @@ import cz.osu.cipher.symmetric.aes.app.utils.Utils;
 
 import java.util.Base64;
 
+/**
+ * Class for keeping current data between console and user.
+ * Data input are from console, and they are processed on "backend"
+ * (mainly in AES API)
+ */
 public class Metadata {
 
     //region Attributes

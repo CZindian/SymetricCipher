@@ -1,5 +1,8 @@
 package cz.osu.cipher.symmetric.aes.app.utils.constants;
 
+/**
+ * Constants that are used in program logic more than once
+ */
 public class Strings {
 
     public static final String CBC = "CBC";

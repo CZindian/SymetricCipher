@@ -2,6 +2,10 @@ package cz.osu.cipher.symmetric.aes.app.utils.constants;
 
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 
+/**
+ * Class for keeping constant phrases that may be used more than once
+ * for console interaction with user
+ */
 public class Phrases {
 
     public static final String INTRO_COMMAND = "Choose 'd' for decryption or 'e' for encryption:";

@@ -7,10 +7,16 @@ import cz.osu.cipher.symmetric.aes.app.utils.Utils;
 
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.INTRO_COMMAND;
 
+/**
+ * Manager for encryption and decryption
+ */
 public class SymmetricCipher {
 
     private static String consoleInput;
 
+    /**
+     * Main run method
+     */
     public static void run() {
 
         System.out.println("Welcome!");
@@ -20,6 +26,9 @@ public class SymmetricCipher {
 
     }
 
+    /**
+     * Main introduction for next steps, that user could do
+     */
     private static void runIntro() {
 
         System.out.println(INTRO_COMMAND);
@@ -49,6 +58,9 @@ public class SymmetricCipher {
 
     }
 
+    /**
+     * Switch for decryption and encryption
+     */
     private static void processConsoleInput() {
 
 

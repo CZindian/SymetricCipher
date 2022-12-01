@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.DECRYPTED;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.ENCRYPTED;
 
+/**
+ * Class to manage storage
+ */
 public class Storage {
 
     //region Attributes
@@ -22,6 +25,14 @@ public class Storage {
     //endregion
 
 
+    /**
+     * @param filePath complete path of input file
+     * @return loaded file string
+     * @throws IOException                          is thrown on IO error
+     * @throws DirectoryDoesNotExistException       is thrown when given directory from path does not exist
+     * @throws FileOrDirectoryDoesNotExistException is thrown when file or directory does not exist on current path
+     * @throws FileDoesNotExistException            is thrown when path does not contain any file
+     */
     public static String load(String filePath) throws IOException, DirectoryDoesNotExistException,
             FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
@@ -33,6 +44,15 @@ public class Storage {
 
     }
 
+    /**
+     * Saves output file
+     *
+     * @param data          output data
+     * @param filePath      complete path of output file
+     * @param operationType defined type of operation (encrypted, decrypted)
+     * @param metadata      is used as cache to store text, mode, block size chosen by user
+     * @throws IOException is thrown on IO error
+     */
     public static void save(String data, String filePath, String operationType, Metadata metadata) throws IOException {
 
         String newPath = getNewUri(filePath, operationType);
@@ -44,6 +64,11 @@ public class Storage {
     }
 
 
+    /**
+     * @param filePath      complete path of input file
+     * @param operationType defined type of operation (encrypted, decrypted)
+     * @return path of new output file
+     */
     private static String getNewUri(String filePath, String operationType) {
 
         filePath = getCleanFilePath(filePath);
@@ -52,6 +77,10 @@ public class Storage {
 
     }
 
+    /**
+     * @param filePath complete path of input file
+     * @return returns path derived from input path
+     */
     private static String getCleanFilePath(String filePath) {
 
         filePath = getFilePathWithout(ENCRYPTED_PART, filePath);
@@ -60,6 +89,11 @@ public class Storage {
 
     }
 
+    /**
+     * @param part     defines what to delete from input file
+     * @param filePath complete path of input file
+     * @return path without defined string part
+     */
     private static String getFilePathWithout(String part, String filePath) {
 
         if (filePath.contains(part)) {

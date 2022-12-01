@@ -12,6 +12,9 @@ import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.*;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CBC;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CFB;
 
+/**
+ * Class manages file encryption
+ */
 public class EncryptFile {
 
     //region Attributes
@@ -19,6 +22,9 @@ public class EncryptFile {
     private static String consoleInput;
     //endregion
 
+    /**
+     * Main method to run file encryption
+     */
     public static void run() {
 
         metadata = new Metadata();
@@ -40,6 +46,10 @@ public class EncryptFile {
 
     }
 
+    /**
+     * Manages encryption
+     * Calls AES IPI for CBC, CFB mode encryption
+     */
     private static void encrypt() {
 
         try {
@@ -56,6 +66,7 @@ public class EncryptFile {
 
     }
 
+    //region Util methods
 
     //region Manage mode, cipherKeyLength, message, password
     private static void runIntroMode() {
@@ -117,7 +128,7 @@ public class EncryptFile {
 
             metadata.setCipherKeyLength(cipherKeyLength);
 
-        } catch (NumberFormatException | UnsuportedBlockSizeException e) {
+        } catch (NumberFormatException | UnsupportedBlockSizeException e) {
             System.out.println(e.getMessage());
             runIntroCipherKeyLength();
 
@@ -156,6 +167,8 @@ public class EncryptFile {
         }
 
     }
+    //endregion
+
     //endregion
 
 }

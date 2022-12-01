@@ -2,7 +2,7 @@ package cz.osu.cipher.symmetric.aes.app.decryption;
 
 import cz.osu.cipher.symmetric.aes.app.aes.AES;
 import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.UnsupportedBlockSizeException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedCipherModeException;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
@@ -12,6 +12,9 @@ import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.CIPHER_KEY
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.MODE_INTRO_COMMAND;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.*;
 
+/**
+ * Class manages text decryption
+ */
 public class DecryptText {
 
     //region Attributes
@@ -20,6 +23,9 @@ public class DecryptText {
     private static String decryptedMessage;
     //endregion
 
+    /**
+     * Main method to run text decryption
+     */
     public static void run() {
 
         metadata = new Metadata();
@@ -41,6 +47,10 @@ public class DecryptText {
 
     }
 
+    /**
+     * Manages decryption
+     * Calls AES IPI for CBC, CFB mode decryption
+     */
     private static void decrypt() {
 
         switch (metadata.getMode().name()) {
@@ -51,6 +61,7 @@ public class DecryptText {
 
     }
 
+    //region Util methods
 
     //region Manage mode, cipherKeyLength, message, password
     private static void runIntroMode() {
@@ -118,7 +129,7 @@ public class DecryptText {
 
             metadata.setCipherKeyLength(cipherKeyLength);
 
-        } catch (NumberFormatException | UnsuportedBlockSizeException e) {
+        } catch (NumberFormatException | UnsupportedBlockSizeException e) {
             System.out.println(e.getMessage());
             runIntroCipherKeyLength();
 
@@ -170,6 +181,8 @@ public class DecryptText {
         }
 
     }
+    //endregion
+
     //endregion
 
 }

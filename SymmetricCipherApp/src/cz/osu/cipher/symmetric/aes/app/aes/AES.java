@@ -10,9 +10,6 @@ import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -21,6 +18,11 @@ import java.util.Base64;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.DECRYPTED;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.ENCRYPTED;
 
+/**
+ * API for work with AES.
+ * Supports 128, 192, 256b block sizes.
+ * Supports CBC, CFB mode.
+ */
 public class AES {
 
     //region Attributes
@@ -30,11 +32,25 @@ public class AES {
     //endregion
 
 
-    //region CBC
+    //region CBC encryption / decryption methods
+
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @return encrypted text
+     */
     public static String encryptTextCBC(Metadata metadata) {
         return getEncryptedString(metadata, AES_CBC_PKCS5_PADDING);
     }
 
+    /**
+     * Encrypts file in CBC mode.
+     *
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @throws IOException                          might be thrown on IO error
+     * @throws DirectoryDoesNotExistException       might be thrown on non-valid file wrong path
+     * @throws FileOrDirectoryDoesNotExistException might be thrown on non-valid file wrong path
+     * @throws FileDoesNotExistException            might be thrown on non-valid file wrong path
+     */
     public static void encryptFileCBC(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
             FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
@@ -43,16 +59,27 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getEncryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        if ((encryptedData != null)){
+        if ((encryptedData != null)) {
             Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
         }
 
     }
 
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @return decrypted text
+     */
     public static String decryptTextCBC(Metadata metadata) {
         return getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
     }
 
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @throws IOException                          might be thrown on IO error
+     * @throws DirectoryDoesNotExistException       might be thrown on non-valid file wrong path
+     * @throws FileOrDirectoryDoesNotExistException might be thrown on non-valid file wrong path
+     * @throws FileDoesNotExistException            might be thrown on non-valid file wrong path
+     */
     public static void decryptFileCBC(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
             FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
@@ -61,18 +88,30 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        if ((encryptedData != null)){
+        if ((encryptedData != null)) {
             Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
         }
 
     }
     //endregion
 
-    //region CFB
+    //region CFB encryption / decryption methods
+
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @return encrypted text
+     */
     public static String encryptTextCFB(Metadata metadata) {
         return getEncryptedString(metadata, AES_CFB_NO_PADDING);
     }
 
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @throws IOException                          might be thrown on IO error
+     * @throws DirectoryDoesNotExistException       might be thrown on non-valid file wrong path
+     * @throws FileOrDirectoryDoesNotExistException might be thrown on non-valid file wrong path
+     * @throws FileDoesNotExistException            might be thrown on non-valid file wrong path
+     */
     public static void encryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
             FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
@@ -81,7 +120,7 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getEncryptedString(metadata, AES_CFB_NO_PADDING);
 
-        if ((encryptedData != null)){
+        if ((encryptedData != null)) {
             Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
         }
 
@@ -91,6 +130,13 @@ public class AES {
         return getDecryptedString(metadata, AES_CFB_NO_PADDING);
     }
 
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @throws IOException                          might be thrown on IO error
+     * @throws DirectoryDoesNotExistException       might be thrown on non-valid file wrong path
+     * @throws FileOrDirectoryDoesNotExistException might be thrown on non-valid file wrong path
+     * @throws FileDoesNotExistException            might be thrown on non-valid file wrong path
+     */
     public static void decryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
             FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
@@ -99,7 +145,7 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getDecryptedString(metadata, AES_CFB_NO_PADDING);
 
-        if ((encryptedData != null)){
+        if ((encryptedData != null)) {
             Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
         }
 
@@ -107,6 +153,11 @@ public class AES {
     //endregion
 
 
+    /**
+     * @param metadata  is used as cache to store text, mode, block size chosen by user
+     * @param algorithm defined algorithm chosen by user (AES/CBC/PKCS5Padding or AES/CFB/NoPadding)
+     * @return encrypted string by defined algorithm
+     */
     private static String getEncryptedString(Metadata metadata, String algorithm) {
 
         try {
@@ -117,7 +168,7 @@ public class AES {
             return encrypt(algorithm, metadata.getMessage(), key, iv);
 
         } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
-                 NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException e) {
+                NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException e) {
             System.out.println("\t-" + e.getMessage());
             throw new RuntimeException(e);
 
@@ -125,7 +176,11 @@ public class AES {
 
     }
 
-
+    /**
+     * @param metadata  is used as cache to store text, mode, block size chosen by user
+     * @param algorithm defined algorithm chosen by user (AES/CBC/PKCS5Padding or AES/CFB/NoPadding)
+     * @return decrypted string by defined algorithm
+     */
     private static String getDecryptedString(Metadata metadata, String algorithm) {
 
         try {
@@ -134,8 +189,8 @@ public class AES {
             return decrypt(algorithm, metadata.getMessage(), key, iv);
 
         } catch (InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
-                 NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException |
-                 RuntimeException e) {
+                NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | InvalidKeyException |
+                RuntimeException e) {
             System.out.println("\t-wrong credentials");
 
         }
@@ -145,27 +200,25 @@ public class AES {
     }
 
 
+    /**
+     * @param metadata is used as cache to store text, mode, block size chosen by user
+     * @return generated key
+     * @throws NoSuchAlgorithmException is thrown when unsupported security algorithm is called
+     * @throws InvalidKeySpecException  is thrown when invalid key is generated
+     */
     private static Key getPasswordBasedKey(Metadata metadata)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         return AES.getPasswordBasedKey(AES_CIPHER, metadata.getCipherKeyLength(), metadata.getPassword().toCharArray());
     }
 
-
-    private static IvParameterSpec generateIv() {
-
-        byte[] iv = new byte[16];
-        new SecureRandom().nextBytes(iv);
-        return new IvParameterSpec(iv);
-
-    }
-
-    private static IvParameterSpec getIvFor(String ivString) {
-
-        byte[] iv = Base64.getDecoder().decode(ivString);
-        return new IvParameterSpec(iv);
-
-    }
-
+    /**
+     * @param cipher   current cipher (AES)
+     * @param keySize  defined block side by user
+     * @param password string password given from user
+     * @return generated key, dependent on password and salt
+     * @throws NoSuchAlgorithmException is thrown when unsupported security algorithm is called
+     * @throws InvalidKeySpecException  is thrown when invalid key is generated
+     */
     private static Key getPasswordBasedKey(String cipher, int keySize, char[] password)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -177,6 +230,43 @@ public class AES {
 
     }
 
+    /**
+     * @return randomly generated initialization vector
+     */
+    private static IvParameterSpec generateIv() {
+
+        byte[] iv = new byte[16];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
+
+    }
+
+    /**
+     * @param ivString initialization vector in string representation
+     * @return initialization vector generated on encryption,
+     * for later purposes of decryption
+     */
+    private static IvParameterSpec getIvFor(String ivString) {
+
+        byte[] iv = Base64.getDecoder().decode(ivString);
+        return new IvParameterSpec(iv);
+
+    }
+
+
+    /**
+     * @param algorithm type of cipher
+     * @param input     input for encryption
+     * @param key       cipher key
+     * @param iv        initialization vector
+     * @return encrypted string
+     * @throws NoSuchPaddingException             is thrown on incorrect padding
+     * @throws NoSuchAlgorithmException           is thrown on incorrect defined cipher
+     * @throws IllegalBlockSizeException          is thrown on incorrect block size
+     * @throws BadPaddingException                is thrown on incorrect padding
+     * @throws InvalidAlgorithmParameterException is thrown on illegal input method argument
+     * @throws InvalidKeyException                is thrown on incorrect key
+     */
     private static String encrypt(String algorithm, String input, Key key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
@@ -189,6 +279,19 @@ public class AES {
 
     }
 
+    /**
+     * @param algorithm  type of cipher
+     * @param cipherText input for decryption
+     * @param key        cipher key
+     * @param iv         initialization vector
+     * @return decrypted string
+     * @throws NoSuchPaddingException             is thrown on incorrect padding
+     * @throws NoSuchAlgorithmException           is thrown on incorrect defined cipher
+     * @throws IllegalBlockSizeException          is thrown on incorrect block size
+     * @throws BadPaddingException                is thrown on incorrect padding
+     * @throws InvalidAlgorithmParameterException is thrown on illegal input method argument
+     * @throws InvalidKeyException                is thrown on incorrect key
+     */
     private static String decrypt(String algorithm, String cipherText, Key key, IvParameterSpec iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException,

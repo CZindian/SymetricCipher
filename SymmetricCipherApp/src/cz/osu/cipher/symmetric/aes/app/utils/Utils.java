@@ -53,7 +53,7 @@ public class Utils {
 
         boolean statement = length == 128 || length == 192 || length == 256;
         if (!statement) {
-            throw new UnsuportedBlockSizeException(length);
+            throw new UnsupportedBlockSizeException(length);
         }
 
     }
