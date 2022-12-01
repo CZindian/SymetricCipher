@@ -44,6 +44,7 @@ public class DecryptFile {
                 default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
             }
             System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
+            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
 
         } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {
             System.out.println(e.getMessage());

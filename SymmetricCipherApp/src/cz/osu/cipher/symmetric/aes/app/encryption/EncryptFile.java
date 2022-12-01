@@ -43,6 +43,7 @@ public class EncryptFile {
                 default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
             }
             System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
+            System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
             System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
         } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {

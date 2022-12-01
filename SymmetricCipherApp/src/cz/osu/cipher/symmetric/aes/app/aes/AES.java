@@ -42,7 +42,7 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getEncryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED);
+        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
 
     }
 
@@ -58,7 +58,7 @@ public class AES {
         metadata.setMessage(data);
         String encryptedData = getDecryptedString(metadata, AES_CBC_PKCS5_PADDING);
 
-        Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED);
+        Storage.save(encryptedData, metadata.getInputPath(), DECRYPTED, metadata);
 
     }
     //endregion
@@ -68,16 +68,32 @@ public class AES {
         return getEncryptedString(metadata, AES_CFB_NO_PADDING);
     }
 
-    public static void encryptFileCFB(Metadata metadata) {
-        throw new UnsupportedOperationException();
+    public static void encryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
+            FileOrDirectoryDoesNotExistException {
+
+        String data = Storage.load(metadata.getInputPath());
+
+        metadata.setMessage(data);
+        String encryptedData = getEncryptedString(metadata, AES_CFB_NO_PADDING);
+
+        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+
     }
 
     public static String decryptTextCFB(Metadata metadata) {
         return getDecryptedString(metadata, AES_CFB_NO_PADDING);
     }
 
-    public static void decryptFileCFB(Metadata metadata) {
-        throw new UnsupportedOperationException();
+    public static void decryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
+            FileOrDirectoryDoesNotExistException {
+
+        String data = Storage.load(metadata.getInputPath());
+
+        metadata.setMessage(data);
+        String encryptedData = getDecryptedString(metadata, AES_CFB_NO_PADDING);
+
+        Storage.save(encryptedData, metadata.getInputPath(), ENCRYPTED, metadata);
+
     }
     //endregion
 

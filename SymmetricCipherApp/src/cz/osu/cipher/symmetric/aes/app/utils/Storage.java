@@ -2,6 +2,7 @@ package cz.osu.cipher.symmetric.aes.app.utils;
 
 import cz.osu.cipher.symmetric.aes.app.exceptions.DirectoryDoesNotExistException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.FileOrDirectoryDoesNotExistException;
+import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,9 +32,11 @@ public class Storage {
 
     }
 
-    public static void save(String data, String filePath, String operationType) throws IOException {
+    public static void save(String data, String filePath, String operationType, Metadata metadata) throws IOException {
 
         String newPath = getNewUri(filePath, operationType);
+        metadata.setOutputPath(newPath);
+
         Path path = Paths.get(newPath);
         Files.writeString(path, data);
 
