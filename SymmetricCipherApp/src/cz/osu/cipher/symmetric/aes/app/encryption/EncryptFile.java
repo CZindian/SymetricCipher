@@ -46,7 +46,8 @@ public class EncryptFile {
             System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
             System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
-        } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {
+        } catch (IOException | FileOrDirectoryDoesNotExistException |
+                 DirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
         }
 
@@ -126,9 +127,11 @@ public class EncryptFile {
         try {
             consoleInput = Utils.getConsoleInput();
             Utils.checkConsoleInputValidity(consoleInput);
+            Utils.checkValidityOf(consoleInput);
             metadata.setInputPath(consoleInput);
 
-        } catch (EmptyMessageException e) {
+        } catch (EmptyMessageException | DirectoryDoesNotExistException |
+                 FileOrDirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
             runIntroInputPath();
 

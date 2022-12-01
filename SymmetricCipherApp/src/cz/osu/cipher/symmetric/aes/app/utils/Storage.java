@@ -1,6 +1,7 @@
 package cz.osu.cipher.symmetric.aes.app.utils;
 
 import cz.osu.cipher.symmetric.aes.app.exceptions.DirectoryDoesNotExistException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.FileDoesNotExistException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.FileOrDirectoryDoesNotExistException;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 
@@ -22,7 +23,7 @@ public class Storage {
 
 
     public static String load(String filePath) throws IOException, DirectoryDoesNotExistException,
-            FileOrDirectoryDoesNotExistException {
+            FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
         Utils.checkValidityOf(filePath);
 

@@ -46,7 +46,8 @@ public class DecryptFile {
             System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
             System.out.println("New file can be found in '" + metadata.getOutputPath() + "'");
 
-        } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {
+        } catch (IOException | FileOrDirectoryDoesNotExistException |
+                 DirectoryDoesNotExistException | FileDoesNotExistException e) {
             System.out.println(e.getMessage());
         }
 
@@ -134,9 +135,11 @@ public class DecryptFile {
         try {
             consoleInput = Utils.getConsoleInput();
             Utils.checkConsoleInputValidity(consoleInput);
+            Utils.checkValidityOf(consoleInput);
             metadata.setInputPath(consoleInput);
 
-        } catch (EmptyMessageException e) {
+        } catch (EmptyMessageException | FileDoesNotExistException | FileOrDirectoryDoesNotExistException |
+                 DirectoryDoesNotExistException e) {
             System.out.println(e.getMessage());
             runIntroInputPath();
 

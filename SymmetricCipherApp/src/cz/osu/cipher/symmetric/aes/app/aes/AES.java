@@ -1,6 +1,7 @@
 package cz.osu.cipher.symmetric.aes.app.aes;
 
 import cz.osu.cipher.symmetric.aes.app.exceptions.DirectoryDoesNotExistException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.FileDoesNotExistException;
 import cz.osu.cipher.symmetric.aes.app.exceptions.FileOrDirectoryDoesNotExistException;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.utils.Storage;
@@ -35,7 +36,7 @@ public class AES {
     }
 
     public static void encryptFileCBC(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
-            FileOrDirectoryDoesNotExistException {
+            FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
         String data = Storage.load(metadata.getInputPath());
 
@@ -51,7 +52,7 @@ public class AES {
     }
 
     public static void decryptFileCBC(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
-            FileOrDirectoryDoesNotExistException {
+            FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
         String data = Storage.load(metadata.getInputPath());
 
@@ -69,7 +70,7 @@ public class AES {
     }
 
     public static void encryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
-            FileOrDirectoryDoesNotExistException {
+            FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
         String data = Storage.load(metadata.getInputPath());
 
@@ -85,7 +86,7 @@ public class AES {
     }
 
     public static void decryptFileCFB(Metadata metadata) throws IOException, DirectoryDoesNotExistException,
-            FileOrDirectoryDoesNotExistException {
+            FileOrDirectoryDoesNotExistException, FileDoesNotExistException {
 
         String data = Storage.load(metadata.getInputPath());
 

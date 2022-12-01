@@ -1,11 +1,9 @@
 package cz.osu.cipher.symmetric.aes.app.utils;
 
-import cz.osu.cipher.symmetric.aes.app.exceptions.DirectoryDoesNotExistException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.FileOrDirectoryDoesNotExistException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.*;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,12 +59,13 @@ public class Utils {
     }
 
     public static void checkValidityOf(String uri)
-            throws FileOrDirectoryDoesNotExistException, DirectoryDoesNotExistException {
+            throws FileOrDirectoryDoesNotExistException, DirectoryDoesNotExistException, FileDoesNotExistException {
 
         Path path = Paths.get(uri);
         if (uri.length() == 0 || !Files.exists(path))
             throw new FileOrDirectoryDoesNotExistException(uri);
         isDirectoryValid(uri);
+        containsFile(uri);
 
     }
 
@@ -75,6 +74,15 @@ public class Utils {
         Path parent = Paths.get(imgUri).getParent();
         if (!Files.isDirectory(parent)) {
             throw new DirectoryDoesNotExistException(imgUri);
+        }
+
+    }
+
+    private static void containsFile(String uri) throws FileDoesNotExistException {
+
+        File file = new File(uri);
+        if (!file.isFile()){
+            throw new FileDoesNotExistException(uri);
         }
 
     }
