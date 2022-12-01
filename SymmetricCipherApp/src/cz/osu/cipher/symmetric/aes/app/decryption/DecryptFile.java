@@ -1,12 +1,12 @@
 package cz.osu.cipher.symmetric.aes.app.decryption;
 
 import cz.osu.cipher.symmetric.aes.app.aes.AES;
-import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedCipherModeException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.*;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 import cz.osu.cipher.symmetric.aes.app.utils.Utils;
+
+import java.io.IOException;
 
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.*;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CBC;
@@ -32,16 +32,21 @@ public class DecryptFile {
         runIntroIvForDecryption();
 
         decrypt();
-        System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
 
     }
 
     private static void decrypt() {
 
-        switch (metadata.getMode().name()) {
-            case CBC -> AES.decryptFileCBC(metadata);
-            case CFB -> AES.decryptFileCFB(metadata);
-            default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
+        try {
+            switch (metadata.getMode().name()) {
+                case CBC -> AES.decryptFileCBC(metadata);
+                case CFB -> AES.decryptFileCFB(metadata);
+                default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
+            }
+            System.out.println("'" + metadata.getInputPath() + "'" + " successfully decrypted.");
+
+        } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
 
     }

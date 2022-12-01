@@ -1,12 +1,12 @@
 package cz.osu.cipher.symmetric.aes.app.encryption;
 
 import cz.osu.cipher.symmetric.aes.app.aes.AES;
-import cz.osu.cipher.symmetric.aes.app.exceptions.EmptyMessageException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedBlockSizeException;
-import cz.osu.cipher.symmetric.aes.app.exceptions.UnsuportedCipherModeException;
+import cz.osu.cipher.symmetric.aes.app.exceptions.*;
 import cz.osu.cipher.symmetric.aes.app.model.Metadata;
 import cz.osu.cipher.symmetric.aes.app.model.Mode;
 import cz.osu.cipher.symmetric.aes.app.utils.Utils;
+
+import java.io.IOException;
 
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Phrases.*;
 import static cz.osu.cipher.symmetric.aes.app.utils.constants.Strings.CBC;
@@ -31,17 +31,22 @@ public class EncryptFile {
         runIntroPassword();
 
         encrypt();
-        System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
-        System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
 
     }
 
     private static void encrypt() {
 
-        switch (metadata.getMode().name()) {
-            case CBC -> AES.encryptFileCBC(metadata);
-            case CFB -> AES.encryptFileCFB(metadata);
-            default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
+        try {
+            switch (metadata.getMode().name()) {
+                case CBC -> AES.encryptFileCBC(metadata);
+                case CFB -> AES.encryptFileCFB(metadata);
+                default -> throw new IllegalArgumentException(metadata.getMode().name() + " is not allowed!");
+            }
+            System.out.println("'" + metadata.getInputPath() + "'" + " successfully encrypted.");
+            System.out.println("Store initialization vector for decryption: " + metadata.getIvForDecryption());
+
+        } catch (IOException | FileOrDirectoryDoesNotExistException | DirectoryDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
 
     }
